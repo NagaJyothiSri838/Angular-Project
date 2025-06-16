@@ -1,0 +1,11 @@
+
+.spacer {
+  flex: 1 1 auto;
+}
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: black !important;
+  color: white;
+}

@@ -1,0 +1,33 @@
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-image: url('https://images.unsplash.com/photo-1554034483-04fda0d3507b?auto=format&fit=crop&w=1350&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+}
+
+.login-card {
+  width: 400px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #54285a; 
+  font-weight: 500;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
