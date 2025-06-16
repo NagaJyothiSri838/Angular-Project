@@ -1,0 +1,19 @@
+
+<div class="home-container">
+  <h1 class="mat-display-2">Welcome!</h1>
+  <div class="features-grid">
+    <div class="feature-row" *ngFor="let row of featureRows">
+    <mat-card *ngFor="let feature of row" class="feature-card" [routerLink]="feature.route">
+      <mat-card-header>
+        <div class="header-content">
+            <mat-icon>{{feature.icon}}</mat-icon>
+            <div class="title-subtitle">
+              <mat-card-title>{{feature.title}}</mat-card-title>
+              <mat-card-subtitle>{{feature.description}}</mat-card-subtitle>
+            </div>
+          </div>
+      </mat-card-header>
+    </mat-card>
+  </div>
+</div>
+</div>
