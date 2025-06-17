@@ -1,0 +1,58 @@
+<div class="todo-container">
+  <div class="header">
+    <h1>To-do List</h1>
+    <a routerLink="/home" class="back-button">Back to Dashboard</a>
+  </div>
+
+  <div class="add-todo">
+    <div class="form-group">
+      <input 
+        type="text" 
+        [(ngModel)]="newTodoText" 
+        placeholder="Add a new task..."
+        (keyup.enter)="addTodo()"
+        required
+        #taskInput="ngModel"
+      [class.error]="(taskInput.invalid && taskInput.touched) || (formSubmitted && taskInput.invalid)"
+    >
+    <div *ngIf="(taskInput.invalid && taskInput.touched) || (formSubmitted && taskInput.invalid)" 
+         class="error-message">
+      Task description is required
+    </div>
+      
+    </div>
+    <div class="form-group">
+      <label>Due Date:</label>
+      <input 
+        type="date" 
+        [(ngModel)]="newTodoDueDate"
+      >
+    </div>
+    <div class="form-group">
+      <label>Priority:</label>
+      <select [(ngModel)]="newTodoPriority" class="priority-select">
+  <option *ngFor="let p of priorities" [value]="p" [class]="'priority-' + p.toLowerCase()">{{ p }}</option>
+</select>
+    </div>
+    <button (click)="addTodo()">Add</button>
+  </div>
+  
+  <div 
+    cdkDropList 
+    (cdkDropListDropped)="drop($event)"
+    class="todo-list"
+  >
+    <app-todo-item 
+      *ngFor="let todo of todos; let i = index" 
+      cdkDrag
+      [todo]="todo"
+      (toggle)="toggleTodo($event)"
+      (edit)="editTodo($event)"
+      (delete)="deleteTodo($event)"
+    ></app-todo-item>
+
+    <div *ngIf="todos.length === 0" class="empty-state">
+  <p>No tasks yet. Add one above!</p>
+</div>
+  </div>
+</div>

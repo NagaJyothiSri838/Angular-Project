@@ -1,0 +1,71 @@
+<div class="todo-item" [class.completed]="todo.completed" [class]="getDueDateStatus()">
+  <div *ngIf="!isEditing; else editMode" class="todo-row">
+    
+    <input 
+      type="checkbox" 
+      [checked]="todo.completed" 
+      (change)="toggle.emit(todo.id)"
+      title="Mark as complete"
+      #checkbox
+    >
+    
+    <!-- <div class="todo-content">
+      <span (dblclick)="startEditing()">{{ todo.text }}</span>
+      <div class="todo-meta">
+        <span *ngIf="todo.dueDate" class="due-date">
+          Due: {{ todo.dueDate | date:'mediumDate' }}
+        </span>
+        <span class="priority" [class]="getPriorityClass()">
+          {{ todo.priority }}
+        </span>
+      </div>
+    </div>
+    <div class="actions">
+      <button (click)="startEditing()">Edit</button>
+      <button (click)="confirmDelete()">Delete</button>
+    </div>
+  </div>  -->
+
+  <span class="todo-text" (dblclick)="startEditing()">{{ todo.text }}</span>
+    
+    <span class="priority-badge" [class]="getPriorityClass()">
+      {{ todo.priority }}
+    </span>
+    
+    <span *ngIf="todo.dueDate" class="due-date">
+      {{ todo.dueDate | date:'shortDate' }}
+    </span>
+    
+    <div class="actions">
+      <button (click)="startEditing()" class="edit-btn">Edit</button>
+      <button (click)="confirmDelete()" class="delete-btn">Delete</button>
+    </div>
+  </div>
+  
+  <ng-template #editMode>
+    <div class="edit-form">
+      <input 
+        type="text" 
+        [(ngModel)]="editTodo.text" 
+        placeholder="Task description"
+      >
+      <div class="form-row">
+        <label>Due Date:</label>
+        <input 
+          type="date" 
+          [(ngModel)]="editTodo.dueDate"
+        >
+      </div>
+      <div class="form-row">
+        <label>Priority:</label>
+        <select [(ngModel)]="editTodo.priority">
+          <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button (click)="saveEdit()">Save</button>
+        <button (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+</div>
