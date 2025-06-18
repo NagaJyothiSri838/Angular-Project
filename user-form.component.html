@@ -1,0 +1,196 @@
+<div class="form-container">
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form-main">
+    <a routerLink="/home" class="back-button">Back to Dashboard</a>
+    <!-- Personal Information Section -->
+    <h3 class="section-title">Personal Information</h3>
+    
+    <div class="form-grid">
+      <!-- Column 1 -->
+      <div class="form-column">
+        <div class="form-field">
+          <label class="form-label">Name <span class="required-asterisk">*</span></label>
+          <input type="text" formControlName="name" class="form-control"
+                 [class.is-invalid]="submitted && userForm.get('name')?.invalid" />
+          <span *ngIf="submitted && userForm.get('name')?.invalid" class="error-message">
+            Name is required
+          </span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Father's Name</label>
+          <input type="text" formControlName="fatherName" class="form-control" />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Address</label>
+          <textarea formControlName="address" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- Column 2 -->
+      <div class="form-column">
+        <div class="form-field">
+          <label class="form-label">Phone Number <span class="required-asterisk">*</span></label>
+          <input type="tel" formControlName="phoneNumber" class="form-control"
+                 [class.is-invalid]="submitted && userForm.get('phoneNumber')?.invalid" />
+          <span *ngIf="submitted && userForm.get('phoneNumber')?.invalid" class="error-message">
+            Valid phone number is required
+          </span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Email <span class="required-asterisk">*</span></label>
+          <input type="email" formControlName="email" class="form-control"
+                 [class.is-invalid]="submitted && userForm.get('email')?.invalid" />
+          <span *ngIf="submitted && userForm.get('email')?.invalid" class="error-message">
+            Valid email is required
+          </span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Job Description</label>
+          <textarea formControlName="jobDescription" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="form-section">
+      <h3 class="section-title">Skills</h3>
+
+      <!-- Selected Skills Display -->
+  <div *ngIf="userForm.get('skills')?.value?.length > 0" class="selected-skills">
+    <h4>Selected Skills:</h4>
+    <div class="skills-list">
+      <span *ngFor="let skill of userForm.get('skills')?.value" class="skill-badge">
+        {{ skill }}
+        <button type="button" class="remove-skill" (click)="removeSkill(skill)">
+          &times;
+        </button>
+      </span>
+    </div>
+  </div>
+
+      <div class="form-field">
+        <label class="form-label">Select Skills <span class="required-asterisk">*</span></label>
+        <select multiple formControlName="skills" class="form-control skills-select"
+                [class.is-invalid]="submitted && userForm.get('skills')?.invalid">
+          <option *ngFor="let skill of skillsList" [value]="skill">{{ skill }}</option>
+        </select>
+        <span *ngIf="submitted && userForm.get('skills')?.invalid" class="error-message">
+          At least one skill is required
+        </span>
+        <small class="form-hint">Hold Ctrl to select multiple skills</small>
+      </div>
+    </div>
+
+    <!-- Projects Section -->
+    <div class="form-section project-section">
+      <h3 class="section-title">Projects</h3>
+      
+      <div formArrayName="projects">
+        <div *ngFor="let project of projects.controls; let i = index" [formGroupName]="i" class="project-card">
+          <div class="project-header">
+            <h4>Project {{ i + 1 }}</h4>
+            <button *ngIf="projects.controls.length > 1" type="button" class="btn btn-remove" (click)="removeProject(i)">
+              <i class="fas fa-trash-alt"></i> Remove
+            </button>
+          </div>
+          
+          <div class="form-grid">
+            <div class="form-column">
+              <div class="form-field">
+                <label class="form-label">Project Name <span class="required-asterisk">*</span></label>
+                <input type="text" formControlName="projectName" class="form-control"
+                       [class.is-invalid]="submitted && project.get('projectName')?.invalid" />
+                <span *ngIf="submitted && project.get('projectName')?.invalid" class="error-message">
+                  Project name is required
+                </span>
+              </div>
+            </div>
+            
+            <div class="form-column">
+              <div class="form-field">
+                <label class="form-label">Your Role <span class="required-asterisk">*</span></label>
+                <input type="text" formControlName="role" class="form-control"
+                       [class.is-invalid]="submitted && project.get('role')?.invalid" />
+                <span *ngIf="submitted && project.get('role')?.invalid" class="error-message">
+                  Role is required
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-field">
+            <label class="form-label">Description <span class="required-asterisk">*</span></label>
+            <textarea formControlName="description" class="form-control" rows="4"
+                     [class.is-invalid]="submitted && project.get('description')?.invalid"></textarea>
+            <span *ngIf="submitted && project.get('description')?.invalid" class="error-message">
+              Description is required
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" (click)="addProject()" class="btn btn-add">
+          <i class="fas fa-plus"></i> Add Project
+        </button>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="submit-section">
+      <button type="submit" class="btn btn-submit">
+         Submit Form
+      </button>
+    </div>
+  </form>
+
+  <!-- Submitted Data Display -->
+<div *ngIf="submittedData" class="submitted-data">
+  <h3 class="section-title">Submitted Information</h3>
+  
+  <div class="data-display">
+    <!-- Personal Information -->
+    <div class="data-section">
+      <h4>Personal Information</h4>
+      <div class="data-grid">
+        <div class="data-column">
+          <p><strong>Name:</strong> {{ submittedData.name }}</p>
+          <p><strong>Father's Name:</strong> {{ submittedData.fatherName }}</p>
+          <p><strong>Address:</strong> {{ submittedData.address }}</p>
+        </div>
+        <div class="data-column">
+          <p><strong>Phone:</strong> {{ submittedData.phoneNumber }}</p>
+          <p><strong>Email:</strong> {{ submittedData.email }}</p>
+          <p><strong>Job Description:</strong> {{ submittedData.jobDescription }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills -->
+    <div class="data-section">
+      <h4>Skills</h4>
+      <div class="skills-list">
+        <span *ngFor="let skill of submittedData.skills" class="skill-badge">
+          {{ skill }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="data-section">
+      <h4>Projects</h4>
+      <div *ngFor="let project of submittedData.projects; let i = index" class="project-data">
+        <h5>Project {{ i + 1 }}</h5>
+        <p><strong>Name:</strong> {{ project.projectName }}</p>
+        <p><strong>Role:</strong> {{ project.role }}</p>
+        <p><strong>Description:</strong> {{ project.description }}</p>
+        <hr *ngIf="i < submittedData.projects.length - 1" />
+      </div>
+    </div>
+  </div>
+</div>
+  
+
